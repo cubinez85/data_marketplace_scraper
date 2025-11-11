@@ -1,0 +1,90 @@
+2025-11-09 19:50:47,687 - INFO - 🔍 WB: сбор артикула 358384386
+2025-11-09 19:51:48,409 - ERROR - WB ошибка для 358384386: Message: session not created: DevToolsActivePort file doesn't exist; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+#0 0x56033f5b3aca <unknown>
+#1 0x56033efffcdb <unknown>
+#2 0x56033f03fab5 <unknown>
+#3 0x56033f03bc46 <unknown>
+#4 0x56033f036215 <unknown>
+#5 0x56033f086eb6 <unknown>
+#6 0x56033f0865d6 <unknown>
+#7 0x56033f044aca <unknown>
+#8 0x56033f0457d1 <unknown>
+#9 0x56033f57aa99 <unknown>
+#10 0x56033f57da6c <unknown>
+#11 0x56033f563d29 <unknown>
+#12 0x56033f57e665 <unknown>
+#13 0x56033f54b6a3 <unknown>
+#14 0x56033f5a07b8 <unknown>
+#15 0x56033f5a0993 <unknown>
+#16 0x56033f5b2a63 <unknown>
+#17 0x7f176e3fdac3 <unknown>
+
+2025-11-09 19:52:04,654 - INFO - 🔍 WB: сбор артикула 152113569
+2025-11-09 19:53:05,406 - ERROR - WB ошибка для 152113569: Message: session not created: DevToolsActivePort file doesn't exist; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+#0 0x55cfbacb0aca <unknown>
+#1 0x55cfba6fccdb <unknown>
+#2 0x55cfba73cab5 <unknown>
+#3 0x55cfba738c46 <unknown>
+#4 0x55cfba733215 <unknown>
+#5 0x55cfba783eb6 <unknown>
+#6 0x55cfba7835d6 <unknown>
+#7 0x55cfba741aca <unknown>
+#8 0x55cfba7427d1 <unknown>
+#9 0x55cfbac77a99 <unknown>
+#10 0x55cfbac7aa6c <unknown>
+#11 0x55cfbac60d29 <unknown>
+#12 0x55cfbac7b665 <unknown>
+#13 0x55cfbac486a3 <unknown>
+#14 0x55cfbac9d7b8 <unknown>
+#15 0x55cfbac9d993 <unknown>
+#16 0x55cfbacafa63 <unknown>
+#17 0x7f1e6163eac3 <unknown>
+
+2025-11-09 19:53:23,223 - INFO - 🔍 Ozon: сбор артикула 1955609657
+2025-11-09 19:54:24,125 - ERROR - Ozon ошибка для 1955609657: Message: session not created: DevToolsActivePort file doesn't exist; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+#0 0x561c0cbf5aca <unknown>
+#1 0x561c0c641cdb <unknown>
+#2 0x561c0c681ab5 <unknown>
+#3 0x561c0c67dc46 <unknown>
+#4 0x561c0c678215 <unknown>
+#5 0x561c0c6c8eb6 <unknown>
+#6 0x561c0c6c85d6 <unknown>
+#7 0x561c0c686aca <unknown>
+#8 0x561c0c6877d1 <unknown>
+#9 0x561c0cbbca99 <unknown>
+#10 0x561c0cbbfa6c <unknown>
+#11 0x561c0cba5d29 <unknown>
+#12 0x561c0cbc0665 <unknown>
+#13 0x561c0cb8d6a3 <unknown>
+#14 0x561c0cbe27b8 <unknown>
+#15 0x561c0cbe2993 <unknown>
+#16 0x561c0cbf4a63 <unknown>
+#17 0x7effd27b7ac3 <unknown>
+
+2025-11-09 19:54:40,960 - INFO - 🔍 Ozon: сбор артикула 1891394918
+2025-11-09 19:58:08,002 - INFO - 🔍 WB: сбор артикула 358384386
+2025-11-09 19:59:08,830 - ERROR - WB ошибка для 358384386: Message: session not created: DevToolsActivePort file doesn't exist; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+#0 0x556cc1eddaca <unknown>
+#1 0x556cc1929cdb <unknown>
+#2 0x556cc1969ab5 <unknown>
+#3 0x556cc1965c46 <unknown>
+#4 0x556cc1960215 <unknown>
+#5 0x556cc19b0eb6 <unknown>
+#6 0x556cc19b05d6 <unknown>
+#7 0x556cc196eaca <unknown>
+#8 0x556cc196f7d1 <unknown>
+#9 0x556cc1ea4a99 <unknown>
+#10 0x556cc1ea7a6c <unknown>
+#11 0x556cc1e8dd29 <unknown>
+#12 0x556cc1ea8665 <unknown>
+#13 0x556cc1e756a3 <unknown>
+#14 0x556cc1eca7b8 <unknown>
+#15 0x556cc1eca993 <unknown>
+#16 0x556cc1edca63 <unknown>
+#17 0x7eff1ed6fac3 <unknown>
+
+2025-11-09 19:59:20,919 - INFO - 🔍 WB: сбор артикула 152113569

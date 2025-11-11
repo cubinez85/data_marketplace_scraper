@@ -1,0 +1,234 @@
+2025-11-08 12:42:19,935 - __main__ - INFO - ==================================================
+2025-11-08 12:42:19,935 - __main__ - INFO - Начало сбора данных: 2025-11-08 12:42:19.935609
+2025-11-08 12:42:19,935 - __main__ - INFO - ==================================================
+2025-11-08 12:42:20,045 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-08 12:42:20,046 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-08 12:42:22,208 - marketplace_scraper - ERROR - Ошибка при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386: Failed to parse: http://proxy1:port
+2025-11-08 12:42:22,208 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-08 12:42:22,208 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-08 12:42:24,308 - marketplace_scraper - ERROR - Ошибка при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569: Failed to parse: http://proxy2:port
+2025-11-08 12:42:24,308 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-08 12:42:24,309 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-08 12:42:24,309 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-08 12:42:26,387 - marketplace_scraper - ERROR - Ошибка при запросе https://www.ozon.ru/product/1955609657/: Failed to parse: http://proxy1:port
+2025-11-08 12:42:26,387 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-08 12:42:26,388 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-08 12:42:28,467 - marketplace_scraper - ERROR - Ошибка при запросе https://www.ozon.ru/product/1891394918/: Failed to parse: http://proxy2:port
+2025-11-08 12:42:28,467 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-08 12:42:28,467 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-08 15:55:02,486 - __main__ - INFO - ==================================================
+2025-11-08 15:55:02,486 - __main__ - INFO - Начало сбора данных: 2025-11-08 15:55:02.486896
+2025-11-08 15:55:02,487 - __main__ - INFO - ==================================================
+2025-11-08 15:55:02,599 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-08 15:55:02,599 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-08 15:55:05,148 - marketplace_scraper - ERROR - Ошибка при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386: 404 Client Error: Not Found for url: https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-08 15:55:05,148 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-08 15:55:05,148 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-08 15:55:07,223 - marketplace_scraper - ERROR - Ошибка при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569: 404 Client Error: Not Found for url: https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-08 15:55:07,223 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-08 15:55:07,223 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-08 15:55:07,223 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-08 15:55:09,745 - marketplace_scraper - ERROR - Ошибка при запросе https://www.ozon.ru/product/1955609657/: 403 Client Error: Forbidden for url: https://www.ozon.ru/product/1955609657/?__rr=1
+2025-11-08 15:55:09,745 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-08 15:55:09,745 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-08 15:55:11,886 - marketplace_scraper - ERROR - Ошибка при запросе https://www.ozon.ru/product/1891394918/: 403 Client Error: Forbidden for url: https://www.ozon.ru/product/1891394918/?__rr=1
+2025-11-08 15:55:11,886 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-08 15:55:11,886 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-08 16:03:52,621 - __main__ - INFO - ==================================================
+2025-11-08 16:03:52,621 - __main__ - INFO - Начало сбора данных: 2025-11-08 16:03:52.621328
+2025-11-08 16:03:52,621 - __main__ - INFO - ==================================================
+2025-11-08 16:03:52,728 - __main__ - ERROR - Критическая ошибка при сборе данных: cannot import name 'YandexMarketScraper' from 'marketplace_scraper' (/home/cubinez85/marketplace-scraper/marketplace_scraper.py)
+Traceback (most recent call last):
+  File "/home/cubinez85/marketplace-scraper/main.py", line 37, in collect_and_save
+    collector = DataCollector(config_path)
+  File "/home/cubinez85/marketplace-scraper/marketplace_scraper.py", line 556, in __init__
+    self._init_scrapers()
+  File "/home/cubinez85/marketplace-scraper/marketplace_scraper.py", line 571, in _init_scrapers
+    from marketplace_scraper import YandexMarketScraper
+ImportError: cannot import name 'YandexMarketScraper' from 'marketplace_scraper' (/home/cubinez85/marketplace-scraper/marketplace_scraper.py)
+2025-11-08 16:12:21,104 - __main__ - INFO - ==================================================
+2025-11-08 16:12:21,104 - __main__ - INFO - Начало сбора данных: 2025-11-08 16:12:21.104483
+2025-11-08 16:12:21,104 - __main__ - INFO - ==================================================
+2025-11-08 16:12:21,244 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-08 16:12:21,244 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-08 16:12:41,073 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f4393917a90>: Failed to resolve 'basket-358.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-08 16:13:01,528 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f4393917520>: Failed to resolve 'basket-358.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-08 16:13:29,143 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f43939178b0>: Failed to resolve 'basket-358.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-08 16:13:36,492 - marketplace_scraper - ERROR - Ошибка при запросе https://basket-358.wb.ru/vol358/part35838/358384386/info/ru/card.json: HTTPSConnectionPool(host='basket-358.wb.ru', port=443): Max retries exceeded with url: /vol358/part35838/358384386/info/ru/card.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f4393917910>: Failed to resolve 'basket-358.wb.ru' ([Errno -3] Temporary failure in name resolution)"))
+2025-11-08 16:13:39,443 - marketplace_scraper - WARNING - Товар не найден (404): https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-08 16:13:42,369 - marketplace_scraper - ERROR - HTTP ошибка 498 при запросе https://www.wildberries.ru/webapi/product/358384386/data: 498 Client Error:  for url: https://www.wildberries.ru/webapi/product/358384386/data
+2025-11-08 16:13:42,369 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 358384386 ни через один API endpoint
+2025-11-08 16:13:42,369 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-08 16:13:42,370 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-08 16:13:54,697 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f43937540a0>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-08 16:14:14,933 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f43937547f0>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-08 16:14:40,802 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f4393754a60>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-08 16:14:50,817 - marketplace_scraper - ERROR - Ошибка при запросе https://basket-152.wb.ru/vol152/part15211/152113569/info/ru/card.json: HTTPSConnectionPool(host='basket-152.wb.ru', port=443): Max retries exceeded with url: /vol152/part15211/152113569/info/ru/card.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f4393754a90>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)"))
+2025-11-08 16:14:53,354 - marketplace_scraper - WARNING - Товар не найден (404): https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-08 16:14:55,841 - marketplace_scraper - ERROR - HTTP ошибка 498 при запросе https://www.wildberries.ru/webapi/product/152113569/data: 498 Client Error:  for url: https://www.wildberries.ru/webapi/product/152113569/data
+2025-11-08 16:14:55,842 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 152113569 ни через один API endpoint
+2025-11-08 16:14:55,849 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-08 16:14:55,850 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-08 16:14:55,851 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-08 16:14:58,680 - marketplace_scraper - WARNING - Доступ запрещен (403): https://www.ozon.ru/api/composer-api.bx/page/json/v2. Возможно, требуется более сложная авторизация.
+2025-11-08 16:14:58,680 - marketplace_scraper - WARNING - Не удалось получить данные через мобильное API для товара 1955609657
+2025-11-08 16:14:58,681 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-08 16:14:58,681 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-08 16:15:00,801 - marketplace_scraper - WARNING - Доступ запрещен (403): https://www.ozon.ru/api/composer-api.bx/page/json/v2. Возможно, требуется более сложная авторизация.
+2025-11-08 16:15:00,801 - marketplace_scraper - WARNING - Не удалось получить данные через мобильное API для товара 1891394918
+2025-11-08 16:15:00,802 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-08 16:15:00,802 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-09 15:38:13,155 - __main__ - INFO - ==================================================
+2025-11-09 15:38:13,157 - __main__ - INFO - Начало сбора данных: 2025-11-09 15:38:13.157810
+2025-11-09 15:38:13,158 - __main__ - INFO - ==================================================
+2025-11-09 15:38:13,310 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-09 15:38:13,310 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-09 15:38:19,591 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd8125576a0>: Failed to resolve 'basket-358.wb.ru' ([Errno -2] Name or service not known)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-09 15:38:32,130 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd812557520>: Failed to resolve 'basket-358.wb.ru' ([Errno -2] Name or service not known)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-09 15:39:07,834 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd812557130>: Failed to resolve 'basket-358.wb.ru' ([Errno -2] Name or service not known)")': /vol358/part35838/358384386/info/ru/card.json
+2025-11-09 15:39:26,000 - marketplace_scraper - INFO - API не вернул данные для 358384386, пробуем парсинг HTML
+2025-11-09 15:39:33,262 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-09 15:39:33,262 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-09 15:39:49,685 - urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd812390550>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-09 15:40:09,877 - urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd8125572b0>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-09 15:40:40,544 - urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fd812557130>: Failed to resolve 'basket-152.wb.ru' ([Errno -3] Temporary failure in name resolution)")': /vol152/part15211/152113569/info/ru/card.json
+2025-11-09 15:40:58,252 - marketplace_scraper - INFO - API не вернул данные для 152113569, пробуем парсинг HTML
+2025-11-09 15:41:05,531 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-09 15:41:05,533 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-09 15:41:05,534 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-09 15:41:15,922 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-09 15:41:15,923 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-09 15:41:21,158 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-09 15:41:21,158 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-09 15:48:53,704 - __main__ - INFO - ==================================================
+2025-11-09 15:48:53,704 - __main__ - INFO - Начало сбора данных: 2025-11-09 15:48:53.704557
+2025-11-09 15:48:53,711 - __main__ - INFO - ==================================================
+2025-11-09 15:48:53,847 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-09 15:48:53,847 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-09 15:49:00,663 - marketplace_scraper - INFO - API не вернул данные для 358384386, пробуем парсинг HTML
+2025-11-09 15:49:00,664 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386
+2025-11-09 15:49:03,129 - marketplace_scraper - WARNING - Не удалось получить HTML страницу для товара 358384386
+2025-11-09 15:49:03,130 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-09 15:49:03,130 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-09 15:49:06,926 - marketplace_scraper - INFO - API не вернул данные для 152113569, пробуем парсинг HTML
+2025-11-09 15:49:06,926 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569
+2025-11-09 15:49:09,010 - marketplace_scraper - WARNING - Не удалось получить HTML страницу для товара 152113569
+2025-11-09 15:49:09,011 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-09 15:49:09,011 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-09 15:49:09,011 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-09 15:49:09,011 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1955609657
+2025-11-09 15:49:11,372 - marketplace_scraper - WARNING - Не удалось получить HTML страницу для товара Ozon 1955609657
+2025-11-09 15:49:11,373 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-09 15:49:11,373 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-09 15:49:11,373 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1891394918
+2025-11-09 15:49:13,548 - marketplace_scraper - WARNING - Не удалось получить HTML страницу для товара Ozon 1891394918
+2025-11-09 15:49:13,548 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-09 15:49:13,549 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-09 15:56:03,522 - __main__ - INFO - ==================================================
+2025-11-09 15:56:03,522 - __main__ - INFO - Начало сбора данных: 2025-11-09 15:56:03.522599
+2025-11-09 15:56:03,522 - __main__ - INFO - ==================================================
+2025-11-09 15:56:03,669 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-09 15:56:03,669 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-09 15:56:06,085 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386: 404 Client Error: Not Found for url: https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-09 15:56:05,692 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=358384386: 404 Client Error: Not Found for url: https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=358384386
+2025-11-09 15:56:08,072 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386: 404 Client Error: Not Found for url: https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-09 15:56:08,073 - marketplace_scraper - INFO - API не вернул данные для 358384386, пробуем парсинг HTML
+2025-11-09 15:56:08,073 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://www.wildberries.ru/catalog/358384386/detail.aspx)
+2025-11-09 15:56:10,500 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/358384386/detail.aspx: 498 Client Error:  for url: https://www.wildberries.ru/catalog/358384386/detail.aspx
+2025-11-09 15:56:10,501 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://wildberries.ru/catalog/358384386/detail.aspx)
+2025-11-09 15:56:13,079 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/358384386/detail.aspx: 498 Client Error:  for url: https://www.wildberries.ru/catalog/358384386/detail.aspx
+2025-11-09 15:56:13,080 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://www.wildberries.ru/catalog/358384386/detail)
+2025-11-09 15:56:15,289 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/358384386/detail: 498 Client Error:  for url: https://www.wildberries.ru/catalog/358384386/detail
+2025-11-09 15:56:15,289 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 358384386 ни через один URL
+2025-11-09 15:56:15,290 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-09 15:56:15,290 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-09 15:56:17,377 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569: 404 Client Error: Not Found for url: https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-09 15:56:19,599 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=152113569: 404 Client Error: Not Found for url: https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=152113569
+2025-11-09 15:56:21,804 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569: 404 Client Error: Not Found for url: https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-09 15:56:21,805 - marketplace_scraper - INFO - API не вернул данные для 152113569, пробуем парсинг HTML
+2025-11-09 15:56:21,805 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://www.wildberries.ru/catalog/152113569/detail.aspx)
+2025-11-09 15:56:23,927 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/152113569/detail.aspx: 498 Client Error:  for url: https://www.wildberries.ru/catalog/152113569/detail.aspx
+2025-11-09 15:56:23,927 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://wildberries.ru/catalog/152113569/detail.aspx)
+2025-11-09 15:56:26,165 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/152113569/detail.aspx: 498 Client Error:  for url: https://www.wildberries.ru/catalog/152113569/detail.aspx
+2025-11-09 15:56:26,166 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://www.wildberries.ru/catalog/152113569/detail)
+2025-11-09 15:56:28,356 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/152113569/detail: 498 Client Error:  for url: https://www.wildberries.ru/catalog/152113569/detail
+2025-11-09 15:56:28,356 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 152113569 ни через один URL
+2025-11-09 15:56:28,357 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-09 15:56:28,357 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-09 15:56:28,357 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-09 15:56:28,376 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1955609657 (URL: https://www.ozon.ru/product/1955609657/)
+2025-11-09 15:56:30,763 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/product/1955609657/: 403 Client Error: Forbidden for url: https://www.ozon.ru/product/1955609657/?__rr=1
+2025-11-09 15:56:30,763 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1955609657 (URL: https://ozon.ru/product/1955609657/)
+2025-11-09 15:56:33,364 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://ozon.ru/product/1955609657/: 403 Client Error: Forbidden for url: https://ozon.ru/product/1955609657/
+2025-11-09 15:56:33,365 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-09 15:56:33,365 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-09 15:56:33,385 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1891394918 (URL: https://www.ozon.ru/product/1891394918/)
+2025-11-09 15:56:35,579 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/product/1891394918/: 403 Client Error: Forbidden for url: https://www.ozon.ru/product/1891394918/?__rr=1
+2025-11-09 15:56:35,579 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1891394918 (URL: https://ozon.ru/product/1891394918/)
+2025-11-09 15:56:35,159 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://ozon.ru/product/1891394918/: 403 Client Error: Forbidden for url: https://ozon.ru/product/1891394918/
+2025-11-09 15:56:35,159 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-09 15:56:35,160 - __main__ - WARNING - Не удалось собрать данные о товарах
+2025-11-09 16:05:32,775 - __main__ - INFO - ==================================================
+2025-11-09 16:05:32,775 - __main__ - INFO - Начало сбора данных: 2025-11-09 16:05:32.775641
+2025-11-09 16:05:32,775 - __main__ - INFO - ==================================================
+2025-11-09 16:05:32,915 - marketplace_scraper - INFO - Начинаем сбор данных с wildberries
+2025-11-09 16:05:32,915 - marketplace_scraper - INFO - Собираем данные о товаре 358384386
+2025-11-09 16:05:35,306 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-09 16:05:37,388 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=358384386
+2025-11-09 16:05:39,812 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=358384386
+2025-11-09 16:05:39,812 - marketplace_scraper - INFO - API не вернул данные для 358384386, пробуем парсинг HTML
+2025-11-09 16:05:39,792 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/
+2025-11-09 16:05:39,792 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://www.wildberries.ru/catalog/358384386/detail.aspx?targetUrl=MI)
+2025-11-09 16:05:41,879 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/358384386/detail.aspx?targetUrl=MI
+2025-11-09 16:05:41,880 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://www.wildberries.ru/catalog/358384386/detail.aspx?targetUrl=GP)
+2025-11-09 16:05:43,952 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/358384386/detail.aspx?targetUrl=GP
+2025-11-09 16:05:43,953 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://www.wildberries.ru/catalog/358384386/detail.aspx)
+2025-11-09 16:05:46,159 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/358384386/detail.aspx
+2025-11-09 16:05:46,160 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://wildberries.ru/catalog/358384386/detail.aspx?targetUrl=MI)
+2025-11-09 16:05:48,693 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/358384386/detail.aspx?targetUrl=MI
+2025-11-09 16:05:48,694 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://wildberries.ru/catalog/358384386/detail.aspx?targetUrl=GP)
+2025-11-09 16:05:50,957 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/358384386/detail.aspx?targetUrl=GP
+2025-11-09 16:05:50,958 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 358384386 (URL: https://wildberries.ru/catalog/358384386/detail.aspx)
+2025-11-09 16:05:53,165 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/358384386/detail.aspx
+2025-11-09 16:05:53,165 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 358384386 ни через один URL
+2025-11-09 16:05:53,166 - marketplace_scraper - INFO - Рекомендация: проверьте артикул 358384386 вручную на сайте или используйте прокси-серверы для обхода защиты
+2025-11-09 16:05:53,166 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 358384386
+2025-11-09 16:05:53,167 - marketplace_scraper - INFO - Собираем данные о товаре 152113569
+2025-11-09 16:05:55,290 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-09 16:05:57,497 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://card.wb.ru/cards/detail?appType=1&curr=rub&dest=-1257786&nm=152113569
+2025-11-09 16:05:59,701 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://catalog.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm=152113569
+2025-11-09 16:05:59,701 - marketplace_scraper - INFO - API не вернул данные для 152113569, пробуем парсинг HTML
+2025-11-09 16:06:01,780 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/
+2025-11-09 16:06:01,781 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://www.wildberries.ru/catalog/152113569/detail.aspx?targetUrl=MI)
+2025-11-09 16:06:04,007 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/152113569/detail.aspx?targetUrl=MI
+2025-11-09 16:06:04,008 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://www.wildberries.ru/catalog/152113569/detail.aspx?targetUrl=GP)
+2025-11-09 16:06:06,146 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/152113569/detail.aspx?targetUrl=GP
+2025-11-09 16:06:06,146 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://www.wildberries.ru/catalog/152113569/detail.aspx)
+2025-11-09 16:06:08,264 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.wildberries.ru/catalog/152113569/detail.aspx
+2025-11-09 16:06:08,264 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://wildberries.ru/catalog/152113569/detail.aspx?targetUrl=MI)
+2025-11-09 16:06:10,431 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/152113569/detail.aspx?targetUrl=MI
+2025-11-09 16:06:10,432 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://wildberries.ru/catalog/152113569/detail.aspx?targetUrl=GP)
+2025-11-09 16:06:12,581 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/152113569/detail.aspx?targetUrl=GP
+2025-11-09 16:06:12,581 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара 152113569 (URL: https://wildberries.ru/catalog/152113569/detail.aspx)
+2025-11-09 16:06:14,728 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://wildberries.ru/catalog/152113569/detail.aspx
+2025-11-09 16:06:14,728 - marketplace_scraper - WARNING - Не удалось получить данные о товаре 152113569 ни через один URL
+2025-11-09 16:06:14,729 - marketplace_scraper - INFO - Рекомендация: проверьте артикул 152113569 вручную на сайте или используйте прокси-серверы для обхода защиты
+2025-11-09 16:06:14,729 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 152113569
+2025-11-09 16:06:14,730 - marketplace_scraper - INFO - Начинаем сбор данных с ozon
+2025-11-09 16:06:14,731 - marketplace_scraper - INFO - Собираем данные о товаре 1955609657
+2025-11-09 16:06:17,331 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/
+2025-11-09 16:06:20,577 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/search/?text=1955609657
+2025-11-09 16:06:20,588 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1955609657 (URL: https://www.ozon.ru/product/1955609657/)
+2025-11-09 16:06:22,729 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/product/1955609657/
+2025-11-09 16:06:22,730 - marketplace_scraper - WARNING - Не удалось получить данные о товаре Ozon 1955609657
+2025-11-09 16:06:22,730 - marketplace_scraper - INFO - Рекомендация: Ozon активно блокирует автоматические запросы. Рассмотрите использование прокси или Selenium для обхода защиты
+2025-11-09 16:06:22,730 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1955609657
+2025-11-09 16:06:22,731 - marketplace_scraper - INFO - Собираем данные о товаре 1891394918
+2025-11-09 16:06:24,897 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/
+2025-11-09 16:06:24,416 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/search/?text=1891394918
+2025-11-09 16:06:24,440 - marketplace_scraper - INFO - Начинаем парсинг HTML для товара Ozon 1891394918 (URL: https://www.ozon.ru/product/1891394918/)
+2025-11-09 16:06:26,589 - marketplace_scraper - WARNING - HTTP ошибка Unknown при запросе https://www.ozon.ru/product/1891394918/
+2025-11-09 16:06:26,590 - marketplace_scraper - WARNING - Не удалось получить данные о товаре Ozon 1891394918
+2025-11-09 16:06:26,590 - marketplace_scraper - INFO - Рекомендация: Ozon активно блокирует автоматические запросы. Рассмотрите использование прокси или Selenium для обхода защиты
+2025-11-09 16:06:26,591 - marketplace_scraper - WARNING - Не удалось собрать данные о товаре 1891394918
+2025-11-09 16:06:26,591 - __main__ - WARNING - Не удалось собрать данные о товарах
