@@ -1,0 +1,45 @@
+marketplaces:
+  wildberries:
+    enabled: true
+    api_url: "https://card.wb.ru/cards/v1/detail"
+    use_api: true
+    use_parsing: true  # Включить парсинг как резервный вариант
+
+  ozon:
+    enabled: true
+    api_url: "https://www.ozon.ru/api/composer-api.bx/page/json"
+    use_api: false
+    use_parsing: true
+
+# Настройки парсинга
+parsing:
+  use_proxy: false
+  proxies: []
+  rotate_user_agent: true
+  rate_limit_delay: 2
+  request_timeout: 10
+  retry_attempts: 3
+  retry_delay: 5
+
+# Настройки сохранения данных
+storage:
+  csv_enabled: true
+  csv_path: "data/products_{date}.csv"
+  google_sheets_enabled: true
+  google_sheets_id: "1x3RN3iLPE1L4BIXOvtm6pxpnBb1oDzy1FhugatMaA9Q"
+  google_sheets_worksheet: "Data"
+
+# Список товаров для мониторинга (артикулы)
+products:
+  wildberries:
+    - "358384386"
+    - "152113569"
+  ozon:
+    - "1955609657"
+    - "2573828081"
+
+# Настройки логирования
+logging:
+  level: "INFO"
+  file: "logs/marketplace_scraper.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

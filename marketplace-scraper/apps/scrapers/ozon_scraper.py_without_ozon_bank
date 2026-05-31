@@ -1,0 +1,674 @@
+"""
+Ozon Selenium Scraper — Django-интеграция.
+Поддерживает два режима:
+  1. Поиск в категории (если search_category задан)
+  2. Прямой переход на карточку товара (если search_category пустой) — РЕКОМЕНДУЕТСЯ
+"""
+import time
+import random
+import re
+import logging
+from typing import Optional, List, Set, Callable, Dict, Any
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium_stealth import stealth
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+
+from apps.scrapers.storage import ProductData
+from django.utils import timezone
+
+logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+# =============================================================================
+
+def setup_driver(headless: bool = True, proxy: Optional[str] = None) -> webdriver.Chrome:
+    """Настройка Chrome-драйвера с анти-детект параметрами."""
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-popup-blocking')
+    options.add_argument('--disable-notifications')
+    options.add_argument('--disable-features=VizDisplayCompositor')
+
+    if headless:
+        options.add_argument('--headless=new')
+
+    options.add_argument(
+        '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    )
+    options.add_argument('--accept-lang=ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+
+    if proxy:
+        options.add_argument(f'--proxy-server={proxy}')
+
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+
+    stealth(
+        driver,
+        languages=["ru-RU", "ru"],
+        vendor="Google Inc.",
+        platform="Win32",
+        webgl_vendor="Intel Inc.",
+        renderer="Intel Iris OpenGL Engine",
+        fix_hairline=True,
+    )
+
+    driver.execute_script(
+        "Object.defineProperty(navigator, 'webdriver', {get: function() {return undefined;}})"
+    )
+    return driver
+
+
+def human_like_delay(min_sec: float = 1.0, max_sec: float = 3.0) -> None:
+    """Случайная задержка для имитации поведения человека."""
+    time.sleep(random.uniform(min_sec, max_sec))
+
+
+def extract_price_from_text(text: Optional[str]) -> Optional[float]:
+    """
+    Максимально устойчивое извлечение цены.
+    Поддерживает: '5 033 ₽', '5 033₽', '5033', '5,033.50 ₽', с любыми пробелами.
+    """
+    if not text:
+        return None
+    
+    try:
+        # Нормализация: заменяем ВСЕ типы пробелов и невидимые символы
+        clean = text
+        for char in ['\u202F', '\u00A0', '\u2009', '\t', '\r', '\n']:
+            clean = clean.replace(char, ' ')
+        
+        # Оставляем только цифры, точки, запятые и пробелы
+        clean = re.sub(r'[^\d\s,.]', '', clean.strip())
+        clean = clean.replace(' ', '').replace(',', '.')
+        
+        if clean:
+            price = float(clean)
+            # Разумный диапазон цен
+            return price if 1 <= price <= 50_000_000 else None
+    except (ValueError, TypeError):
+        pass
+    return None
+
+
+def extract_article_from_url(url: str) -> Optional[str]:
+    """Извлечение артикула (product_id) из URL товара Ozon."""
+    if not url:
+        return None
+    url = url.split('?')[0].rstrip('/')
+    patterns = [
+        r'--(\d{8,})/?$', r'/product/(\d{8,})/?$', r'/(\d{8,})/?$',
+        r'[?&]product_id[=:]?(\d{8,})', r'-(\d{8,})(?:/|$)',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    return None
+
+
+# =============================================================================
+# ОСНОВНОЙ КЛАСС ПАРСЕРА
+# =============================================================================
+
+class OzonSeleniumScraper:
+    """
+    Парсер Ozon с двумя режимами:
+      - Поиск в категории (если search_category задан)
+      - Прямой переход на карточку (если search_category пустой) — РЕКОМЕНДУЕТСЯ
+    """
+
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        self.config = config or {}
+        self.headless: bool = self.config.get('headless', True)
+        self.proxy: Optional[str] = self.config.get('proxy')
+        self.timeout: int = self.config.get('timeout', 30)
+        self.max_scrolls: int = self.config.get('max_scrolls', 10)
+        self.min_price: float = self.config.get('min_price', 100)
+        self.max_price: float = self.config.get('max_price', 10_000_000)
+        self.request_delay: tuple = tuple(self.config.get('request_delay', (5, 10)))
+
+    def _build_search_url(self, search_query: str, search_category: Optional[str] = None) -> str:
+        """Формирование поискового URL с учётом категории."""
+        query_encoded = search_query.strip().replace(' ', '+')
+        if search_category:
+            if search_category.startswith('http'):
+                category_url = search_category.rstrip('/')
+            elif search_category.startswith('/'):
+                category_url = f"https://www.ozon.ru{search_category.rstrip('/')}"
+            elif search_category.isdigit():
+                category_url = f"https://www.ozon.ru/category/{search_category}/"
+            else:
+                category_url = f"https://www.ozon.ru/category/{search_category.rstrip('/')}/"
+            separator = '&' if '?' in category_url else '?'
+            return f"{category_url}{separator}text={query_encoded}&from_global=true"
+        return f"https://www.ozon.ru/search/?text={query_encoded}&from_global=true"
+
+    def _close_cookie_banner(self, driver: webdriver.Chrome) -> bool:
+        """Закрывает баннер с куки всеми известными способами."""
+        strategies = [
+            (By.XPATH, "//button[contains(text(), 'OK') and contains(@class, 'cookie')]"),
+            (By.XPATH, "//button[contains(text(), 'Принять')]"),
+            (By.XPATH, "//button[contains(text(), 'Согласен')]"),
+            (By.CSS_SELECTOR, "button[class*='cookie-accept'], button[data-testid*='cookie-ok']"),
+            (By.CSS_SELECTOR, ".b65951a73 button[type='button']"),
+            (By.XPATH, "//*[contains(@class, 'cookie') or contains(@class, 'consent')]//button[1]"),
+        ]
+        
+        for by, selector in strategies:
+            try:
+                buttons = driver.find_elements(by, selector)
+                for btn in buttons:
+                    if btn.is_displayed() and btn.is_enabled():
+                        driver.execute_script("arguments[0].click();", btn)
+                        human_like_delay(1, 2)
+                        return True
+            except:
+                continue
+        return False
+
+    def _is_blocked(self, driver: webdriver.Chrome, article: str) -> bool:
+        """Проверяет, не заблокировал ли Ozon запрос."""
+        try:
+            text = (driver.title + ' ' + driver.find_element(By.TAG_NAME, "body").text).lower()
+            blockers = ['captcha', 'robot', 'проверка', 'безопасность', 'доступ ограничен', '403', '404', 'потеряли']
+            if any(b in text for b in blockers):
+                logger.error(f"🛡️ Ozon: блокировка для {article}")
+                driver.save_screenshot(f'logs/ozon_{article}_blocked.png')
+                return True
+        except:
+            pass
+        return False
+
+    def _parse_product_detail_page(self, driver: webdriver.Chrome, article: str, url: str) -> Optional[ProductData]:
+        """Парсинг детальной страницы — МАКСИМАЛЬНО УСТОЙЧИВАЯ ВЕРСИЯ."""
+        try:
+            wait = WebDriverWait(driver, 20)
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, "h1")))
+            human_like_delay(3, 5)
+            
+            # Закрываем куки
+            self._close_cookie_banner(driver)
+            human_like_delay(2, 3)
+            
+            # Проверка на блокировку
+            if self._is_blocked(driver, article):
+                return None
+
+            # Name
+            name = None
+            name_selectors = ["h1[itemprop='name']", "h1[data-testid='title']", "h1.c8a684807", "h1.a10a3f92e8", "h1"]
+            for sel in name_selectors:
+                try:
+                    el = driver.find_element(By.CSS_SELECTOR, sel)
+                    name = el.text.strip()
+                    if name and len(name) > 10 and len(name) < 300:
+                        name = re.sub(r'\s+', ' ', name)
+                        break
+                except:
+                    continue
+            if not name:
+                logger.warning(f"❌ Ozon direct: не найдено название для {article}")
+                return None
+
+            # === ИЗВЛЕЧЕНИЕ ЦЕНЫ — ИСПРАВЛЕННАЯ ВЕРСИЯ ===
+            price = None
+
+            # 1. Ищем через кнопку "Купить" (самый надёжный способ)
+            try:
+                add_to_cart = driver.find_element(By.CSS_SELECTOR, "[data-testid='add-to-cart'], button[class*='add-to-cart']")
+                # Ищем цену в родительских элементах
+                parent = add_to_cart.find_element(By.XPATH, "./ancestor::div[contains(@class, 'price')]")
+                price_elements = parent.find_elements(By.CSS_SELECTOR, "span[contains(text(), '₽')]")
+                for el in price_elements:
+                    p = extract_price_from_text(el.text)
+                    if p and 100 <= p <= 50_000_000:
+                        price = p
+                        break
+            except:
+                pass
+
+            # 2. Если не нашли, ищем через стандартные селекторы (исключая банки)
+            if not price:
+                for sel in [".pdp_jb.tsHeadline500Medium", "[data-testid='price-value']", "span[itemprop='price']"]:
+                    try:
+                        elements = driver.find_elements(By.CSS_SELECTOR, sel)
+                        for el in elements:
+                            text = el.text.strip()
+                            # Пропускаем цены с банками и за единицу
+                            if text and '₽' in text and 'банк' not in text.lower() and not re.search(r'/\d', text):
+                                p = extract_price_from_text(text)
+                                if p and 100 <= p <= 50_000_000:
+                                    price = p
+                                    break
+                        if price:
+                            break
+                    except:
+                        continue
+
+            # 3. Fallback: берём минимальную цену (исключая банки)
+            if not price:
+                try:
+                    all_prices = []
+                    for el in driver.find_elements(By.XPATH, "//*[contains(text(), '₽')]"):
+                        text = el.text.strip()
+                        if not text or 'банк' in text.lower() or re.search(r'/\d', text):
+                            continue
+                        p = extract_price_from_text(text)
+                        if p and 100 <= p <= 50_000_000:
+                            all_prices.append(p)
+                    if all_prices:
+                        price = min(all_prices)
+                except:
+                    pass
+
+            if not price:
+                logger.warning(f"❌ Ozon direct: не найдена цена для {article}")
+                driver.save_screenshot(f'logs/ozon_{article}_no_price.png')
+                return None
+            # Old price
+            old_price = None
+            for sel in ["s[itemprop='priceSpecification']", "[class*='price-old']", ".c243e6759", ".pdp_jb.tsBody500Medium", "del"]:
+                try:
+                    for el in driver.find_elements(By.CSS_SELECTOR, sel):
+                        text = el.text.strip()
+                        if text and '₽' in text:
+                            p = extract_price_from_text(text)
+                            if p and p > price:
+                                old_price = p
+                                break
+                    if old_price:
+                        break
+                except:
+                    continue
+
+            # Availability
+            availability = True
+            try:
+                cart_selectors = ["[data-testid='add-to-cart']", ".b65951a73", "[class*='add-to-cart']", "button[type='button']"]
+                found_cart = False
+                for sel in cart_selectors:
+                    try:
+                        btns = driver.find_elements(By.CSS_SELECTOR, sel)
+                        for btn in btns:
+                            if btn.is_displayed():
+                                text = btn.text.lower()
+                                if any(x in text for x in ['корзин', 'купить', 'добавить', 'в корзину']):
+                                    found_cart = True
+                                    if btn.get_attribute('disabled'):
+                                        availability = False
+                                    break
+                        if found_cart:
+                            break
+                    except:
+                        continue
+                if not found_cart:
+                    body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
+                    if any(x in body_text for x in ['нет в наличии', 'закончился', 'под заказ', 'out of stock']):
+                        availability = False
+            except:
+                pass
+
+            # Rating
+            rating = None
+            try:
+                for el in driver.find_elements(By.CSS_SELECTOR, "[itemprop='ratingValue'], [class*='rating'], .a10a3f92e8"):
+                    match = re.search(r'(\d+[.,]\d+)', el.text)
+                    if match:
+                        r = float(match.group(1).replace(',', '.'))
+                        if 0 <= r <= 5:
+                            rating = r
+                            break
+            except:
+                pass
+
+            # Reviews count
+            reviews_count = 0
+            try:
+                for el in driver.find_elements(By.CSS_SELECTOR, "[class*='review-count'], [data-testid='reviews-count'], a[href*='reviews']"):
+                    match = re.search(r'(\d+)', el.text.replace(' ', ''))
+                    if match:
+                        reviews_count = int(match.group(1))
+                        break
+            except:
+                pass
+
+            # Image URL
+            image_url = None
+            try:
+                img = driver.find_element(By.CSS_SELECTOR, "img[itemprop='image'], .c8a684807 img, [data-testid='product-image'], .a10a3f92e8 img")
+                src = img.get_attribute('src') or img.get_attribute('data-src')
+                if src and src.startswith('http'):
+                    image_url = src.split('?')[0]
+            except:
+                pass
+
+            # Category
+            category = None
+            try:
+                bc = driver.find_elements(By.CSS_SELECTOR, "[class*='breadcrumb'] a, .a10a3f92e8 a")
+                if len(bc) >= 2:
+                    category = bc[-2].text.strip()
+            except:
+                pass
+
+            logger.info(f"✅ Ozon direct: {article} | {name[:40]}... | {price}₽")
+
+            return ProductData(
+                marketplace='ozon',
+                article=article,
+                name=name,
+                price=price,
+                old_price=old_price,
+                availability=availability,
+                rating=rating,
+                reviews_count=reviews_count,
+                url=url,
+                collected_at=timezone.now(),
+                image_url=image_url,
+                category=category,
+                extra_data={'mode': 'direct', 'parser_version': 'robust_2026'}
+            )
+
+        except Exception as e:
+            logger.error(f"❌ Ozon direct: ошибка парсинга {article}: {e}", exc_info=True)
+            try:
+                driver.save_screenshot(f'logs/ozon_{article}_error.png')
+            except:
+                pass
+            return None
+
+    def search_target_products(
+        self,
+        target_articles: List[str],
+        search_query: str,
+        search_category: Optional[str] = None,
+        on_progress: Optional[Callable[[int, int, int], None]] = None
+    ) -> List[ProductData]:
+        """
+        Поиск целевых товаров.
+        
+        Режимы:
+          - Если search_category задан → поиск в категории по запросу
+          - Если search_category пустой → прямой переход на карточку (РЕКОМЕНДУЕТСЯ)
+        """
+        if not search_query or not search_query.strip():
+            raise ValueError("search_query обязателен для Ozon. Задайте его в Admin → SearchTarget.")
+
+        target_set: Set[str] = set(str(a).strip() for a in target_articles if a)
+        if not target_set:
+            logger.warning("⚠️ Ozon: пустой список целевых артикулов")
+            return []
+
+        found_products: List[ProductData] = []
+        driver = None
+
+        # 🔴 ПРЯМОЙ РЕЖИМ: если категория не задана — парсим каждый товар напрямую
+        if not search_category:
+            logger.info(f"🔍 Ozon: ПРЯМОЙ РЕЖИМ — парсинг {len(target_set)} товаров по прямым ссылкам")
+            for i, article in enumerate(target_set):
+                url = f"https://www.ozon.ru/product/{article}/"
+                logger.info(f"🔗 Ozon direct: {article} → {url}")
+                
+                try:
+                    driver = setup_driver(headless=self.headless, proxy=self.proxy)
+                    driver.set_page_load_timeout(self.timeout)
+                    driver.get(url)
+                    
+                    product = self._parse_product_detail_page(driver, article, url)
+                    if product:
+                        found_products.append(product)
+                        logger.info(f"✅ Ozon direct: сохранён {article}")
+                    else:
+                        logger.warning(f"⚠️ Ozon direct: не удалось распарсить {article}")
+                    
+                    if on_progress:
+                        on_progress(i + 1, len(target_set), len(found_products))
+                        
+                except Exception as e:
+                    logger.error(f"❌ Ozon direct: критическая ошибка для {article}: {e}", exc_info=True)
+                finally:
+                    if driver:
+                        try:
+                            driver.quit()
+                        except:
+                            pass
+                    driver = None
+                    if i < len(target_set) - 1:
+                        delay = random.uniform(*self.request_delay)
+                        time.sleep(delay)
+            
+            logger.info(f"📊 Ozon direct: завершено. Найдено: {len(found_products)}/{len(target_articles)}")
+            return found_products
+
+        # 🔵 РЕЖИМ ПОИСКА: если категория задана — ищем в категории
+        query = search_query.strip()
+        search_url = self._build_search_url(query, search_category)
+        logger.info(f"🔍 Ozon: поиск в категории '{search_category}' по запросу '{query}'")
+
+        seen_articles: Set[str] = set()
+        try:
+            driver = setup_driver(headless=self.headless, proxy=self.proxy)
+            driver.set_page_load_timeout(self.timeout)
+            driver.get(search_url)
+            WebDriverWait(driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "div[class*='tile'], article[class*='tile']"))
+            )
+            human_like_delay(3, 5)
+            # Прокрутка для режима поиска
+            for _ in range(self.max_scrolls):
+                driver.execute_script(f"window.scrollBy(0, {random.randint(800, 1200)});")
+                human_like_delay(1.5, 2.5)
+
+            cards = self._find_product_cards(driver)
+            logger.info(f"📦 Ozon: найдено {len(cards)} карточек")
+
+            for i, card in enumerate(cards):
+                try:
+                    product = self._parse_card(card, driver)
+                    if not product or product.article in seen_articles:
+                        continue
+                    seen_articles.add(product.article)
+
+                    if product.article in target_set:
+                        logger.info(f"✅ Ozon: найден {product.article} | {product.name[:40]}...")
+                        found_products.append(product)
+                        target_set.discard(product.article)
+
+                    if on_progress:
+                        on_progress(i + 1, len(cards), len(found_products))
+
+                    if not target_set:
+                        logger.info("🎉 Ozon: все целевые товары найдены, завершаем досрочно")
+                        break
+                except Exception as e:
+                    logger.debug(f"⚠️ Ozon: ошибка парсинга карточки #{i+1}: {e}")
+                    continue
+                if i % 5 == 0 and i > 0:
+                    human_like_delay(0.5, 1.5)
+
+            if target_set:
+                logger.warning(f"❌ Ozon: не найдены артикулы: {target_set}")
+
+        except Exception as e:
+            logger.error(f"❌ Ozon: критическая ошибка: {e}", exc_info=True)
+        finally:
+            if driver:
+                try:
+                    driver.quit()
+                except:
+                    pass
+
+        logger.info(f"📊 Ozon: поиск завершён. Найдено: {len(found_products)}/{len(target_articles)}")
+        return found_products
+
+    def _find_product_cards(self, driver: webdriver.Chrome) -> list:
+        selectors = [
+            "div[class*='tile-root']", "article[class*='tile-root']",
+            "div[class*='widget-search-result'] div[class*='tile']",
+            "div[class*='tile']", "article[class*='tile']",
+            "[data-widget='searchResult']", "div[class*='card']"
+        ]
+        for sel in selectors:
+            try:
+                cards = driver.find_elements(By.CSS_SELECTOR, sel)
+                if cards:
+                    return cards
+            except:
+                continue
+        return []
+
+    def _parse_card(self, card, driver) -> Optional[ProductData]:
+        """Парсинг карточки из поисковой выдачи."""
+        try:
+            url = None
+            for sel in ["a[href*='/product/']", "a[class*='tile-link']", "a[class*='card-link']", "article a"]:
+                try:
+                    url = card.find_element(By.CSS_SELECTOR, sel).get_attribute("href")
+                    if url:
+                        break
+                except:
+                    continue
+            if not url:
+                return None
+            
+            article = extract_article_from_url(url)
+            if not article:
+                return None
+
+            name = self._extract_name(card)
+            if not name or len(name) < 5:
+                return None
+
+            price = self._extract_price(card)
+            if not price or price < self.min_price:
+                return None
+
+            return ProductData(
+                marketplace='ozon',
+                article=article,
+                name=name,
+                price=price,
+                old_price=self._extract_old_price(card),
+                availability=self._extract_availability(card),
+                rating=self._extract_rating(card),
+                reviews_count=self._extract_reviews_count(card),
+                url=url,
+                collected_at=timezone.now(),
+                image_url=self._extract_image_url(card),
+                category=self._extract_category(card),
+                extra_data={'mode': 'search'}
+            )
+        except Exception as e:
+            logger.debug(f"⚠️ Ozon: ошибка парсинга карточки: {e}")
+            return None
+
+    def _extract_name(self, card) -> Optional[str]:
+        for sel in ["span[class*='tsBody']", "a[class*='title']", "span[class*='title']", "div[class*='title']", "h3", "h4"]:
+            try:
+                text = card.find_element(By.CSS_SELECTOR, sel).text.strip()
+                if text and len(text) > 10:
+                    return re.sub(r'\s+', ' ', text).strip()
+            except:
+                continue
+        return None
+
+    def _extract_price(self, card) -> Optional[float]:
+        for sel in ["span[class*='price']", "div[class*='price']", "span[class*='tsHeadline']", "[data-widget*='price']"]:
+            try:
+                for el in card.find_elements(By.CSS_SELECTOR, sel):
+                    price = extract_price_from_text(el.text)
+                    if price and self.min_price <= price <= self.max_price:
+                        return price
+            except:
+                continue
+        try:
+            match = re.search(r'(\d{1,3}(?:[ \u202F]?\d{3})+)', card.text)
+            if match:
+                val = float(re.sub(r'[^\d]', '', match.group(1)))
+                if self.min_price <= val <= self.max_price:
+                    return val
+        except:
+            pass
+        return None
+
+    def _extract_old_price(self, card) -> Optional[float]:
+        for sel in ["span[class*='old-price']", "div[class*='old-price']", "s[class*='price']", "[class*='old-price']"]:
+            try:
+                for el in card.find_elements(By.CSS_SELECTOR, sel):
+                    price = extract_price_from_text(el.text)
+                    if price and price > 100:
+                        return price
+            except:
+                continue
+        return None
+
+    def _extract_rating(self, card) -> Optional[float]:
+        for sel in ["span[class*='rating']", "div[class*='rating']", "[class*='star-rate']"]:
+            try:
+                for el in card.find_elements(By.CSS_SELECTOR, sel):
+                    match = re.search(r'(\d+[.,]\d+)', el.text)
+                    if match:
+                        rating = float(match.group(1).replace(',', '.'))
+                        if 0 <= rating <= 5:
+                            return rating
+            except:
+                continue
+        return None
+
+    def _extract_reviews_count(self, card) -> int:
+        for sel in ["span[class*='review']", "div[class*='review']", "[class*='review-count']"]:
+            try:
+                for el in card.find_elements(By.CSS_SELECTOR, sel):
+                    match = re.search(r'(\d+)', el.text.replace(' ', ''))
+                    if match:
+                        return int(match.group(1))
+            except:
+                continue
+        return 0
+
+    def _extract_availability(self, card) -> bool:
+        try:
+            text = card.text.lower()
+            if any(ind in text for ind in ["нет в наличии", "товар закончился", "под заказ", "out of stock"]):
+                return False
+            if any(ind in text for ind in ["в корзину", "купить", "добавить"]):
+                return True
+        except:
+            pass
+        return True
+
+    def _extract_image_url(self, card) -> Optional[str]:
+        for sel in ["img[class*='tile-photo']", "img[class*='card-photo']", "[data-src]", "img[src*='cdn']"]:
+            try:
+                img = card.find_element(By.CSS_SELECTOR, sel)
+                url = img.get_attribute('src') or img.get_attribute('data-src')
+                if url and url.startswith('http'):
+                    return url.split('?')[0]
+            except:
+                continue
+        return None
+
+    def _extract_category(self, card) -> Optional[str]:
+        try:
+            bc = card.find_element(By.CSS_SELECTOR, "[class*='breadcrumb'], [class*='category']")
+            if bc:
+                return bc.text.strip()
+        except:
+            pass
+        return None
