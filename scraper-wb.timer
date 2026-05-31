@@ -1,0 +1,17 @@
+[Unit]
+Description=Run WB scraper every 6 hours
+Requires=scraper-wb.service
+
+[Timer]
+# Запуск каждые 6 часов (со сдвигом 30 мин от Ozon)
+OnBootSec=40min
+OnUnitActiveSec=6h
+
+# Или точное расписание:
+# OnCalendar=*-*-* 00/6:30:00
+
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
