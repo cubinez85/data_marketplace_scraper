@@ -1,0 +1,21 @@
+[Unit]
+Description=Gunicorn instance for Marketplace Scraper
+After=network.target postgresql.service
+
+[Service]
+User=cubinez85
+Group=www-data
+WorkingDirectory=/home/cubinez85/data_marketplace_scraper/marketplace-scraper
+ExecStart=/home/cubinez85/data_marketplace_scraper/marketplace-scraper/venv/bin/gunicorn \
+    --bind 127.0.0.1:8086 \
+    --workers 3 \
+    --timeout 120 \
+    --access-logfile /home/cubinez85/data_marketplace_scraper/marketplace-scraper/logs/gunicorn_access.log \
+    --error-logfile /home/cubinez85/data_marketplace_scraper/marketplace-scraper/logs/gunicorn_error.log \
+    config.wsgi:application
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
