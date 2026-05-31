@@ -1,0 +1,64 @@
+# =============================================================================
+# PYTHON & DJANGO ARTIFACTS
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg
+
+# =============================================================================
+# VIRTUAL ENVIRONMENTS
+# =============================================================================
+venv/
+ENV/
+env/
+.venv/
+marketplace-scraper/venv/
+
+# =============================================================================
+# SENSITIVE DATA & SECRETS (физически внутри marketplace-scraper/)
+# =============================================================================
+marketplace-scraper/.env
+marketplace-scraper/.env.local
+marketplace-scraper/credentials.json
+*.pem
+*.key
+config_secret.py
+
+# =============================================================================
+# GENERATED PROJECT DATA
+# =============================================================================
+marketplace-scraper/logs/
+marketplace-scraper/data/
+marketplace-scraper/screenshots/
+marketplace-scraper/tmp/
+marketplace-scraper/temp/
+
+# =============================================================================
+# DJANGO SPECIFICS
+# =============================================================================
+db.sqlite3
+*.sqlite3
+marketplace-scraper/staticfiles/
+marketplace-scraper/media/
+
+# =============================================================================
+# IDE & OS FILES
+# =============================================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
