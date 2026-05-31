@@ -1,0 +1,32 @@
+[Unit]
+Description=Marketplace Scraper — Wildberries Parser
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=oneshot
+User=cubinez85
+Group=www-data
+WorkingDirectory=/home/cubinez85/data_marketplace_scraper/marketplace-scraper
+
+# Загрузка переменных окружения из .env
+EnvironmentFile=/home/cubinez85/data_marketplace_scraper/marketplace-scraper/.env
+
+# Активация venv и запуск парсера
+ExecStart=/bin/bash -c 'source /home/cubinez85/data_marketplace_scraper/marketplace-scraper/venv/bin/activate && python manage.py run_wb'
+
+# Логи
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=scraper-wb
+
+# Безопасность
+PrivateTmp=true
+NoNewPrivileges=true
+
+# Таймауты
+TimeoutStartSec=600
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
