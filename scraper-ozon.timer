@@ -1,0 +1,17 @@
+[Unit]
+Description=Run Ozon scraper every 6 hours
+Requires=scraper-ozon.service
+
+[Timer]
+# Запуск каждые 6 часов
+OnBootSec=10min
+OnUnitActiveSec=6h
+
+# Или точное расписание (раскомментируйте, если нужно):
+# OnCalendar=*-*-* 00/6:00:00
+
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
